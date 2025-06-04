@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>영화 검색</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="filter-section">
+    
+    <!-- 첫 줄: 영화명 / 감독명 -->
+    <div class="row1">
+      <div class="form-group">
+        <label>영화명</label>
+        <input type="text" />
+      </div>
+      <div class="form-group">
+        <label>감독명</label>
+        <input type="text" />
+      </div>
+        <!-- 오른쪽 버튼 -->
+        <div class="right-buttons">
+            <button class="search-btn">조회</button>
+            <button class="reset-btn">초기화</button>
+        </div>
+    </div>
+       
+
+    <!-- 둘째 줄: 제작연도 / 개봉일자 -->
+    <div class="row2">
+        <div class="form-group">
+            <label>제작연도</label>
+            <select><option>--전체--</option></select>
+            ~
+            <select><option>--전체--</option></select>
+        </div>
+
+        <div class="form-group">
+            <label>개봉일자</label>
+            <input type="date"> ~ <input type="date">
+        </div>
+    </div>
+
+    <!-- 더보기 버튼 가운데 -->
+    <div class="center-toggle">
+      <button class="toggle-btn" onclick="toggleMore()">더보기 🔍</button>
+    </div>
+
+    <!-- 숨겨진 필터 영역 -->
+    <div id="moreFilters" class="hidden">
+        <div class="row">
+            <label>제작상태</label><input type="text" />
+            <label>유형</label><input type="text" />
+        </div>
+        <div class="row">
+            <label>장르별</label><input type="text" />
+            <label>국적별</label><input type="text" />
+        </div>
+        <div class="row">
+            <label>등급별</label><input type="text" />
+            <label>대표국적별</label><input type="text" />
+        </div>
+        <div class="row checkbox-row">
+            <div class="form-group">
+                <label>상영타입별</label>
+                <input type="text" />
+                <label class=""checkbox-label>영화구분</label>
+                <label><input type="checkbox" /> 일반영화</label>
+                <label><input type="checkbox" /> 예술영화</label>
+                <label><input type="checkbox" /> 독립영화</label>
+            </div>
+        </div>
+        <div class="row">
+            <label>영화명 인덱싱</label>
+            <div class="indexing-list">
+                <a href="#" data-index="ㄱ">ㄱ</a>
+                <a href="#" data-index="ㄴ">ㄴ</a>
+                <a href="#" data-index="ㄷ">ㄷ</a>
+                <a href="#" data-index="ㄹ">ㄹ</a>
+                <a href="#" data-index="ㅁ">ㅁ</a>
+                <a href="#" data-index="ㅂ">ㅂ</a>
+                <a href="#" data-index="ㅅ">ㅅ</a>
+                <a href="#" data-index="ㅇ">ㅇ</a>
+                <a href="#" data-index="ㅈ">ㅈ</a>
+                <a href="#" data-index="ㅊ">ㅊ</a>
+                <a href="#" data-index="ㅋ">ㅋ</a>
+                <a href="#" data-index="ㅌ">ㅌ</a>
+                <a href="#" data-index="ㅍ">ㅍ</a>
+                <a href="#" data-index="ㅎ">ㅎ</a>
+
+                <a href="#" data-index="A">A</a>
+                <a href="#" data-index="B">B</a>
+                <a href="#" data-index="C">C</a>
+                <a href="#" data-index="D">D</a>
+                <a href="#" data-index="E">E</a>
+                <a href="#" data-index="F">F</a>
+                <a href="#" data-index="G">G</a>
+                <a href="#" data-index="H">H</a>
+                <a href="#" data-index="I">I</a>
+                <a href="#" data-index="J">J</a>
+                <a href="#" data-index="K">K</a>
+                <a href="#" data-index="L">L</a>
+                <a href="#" data-index="M">M</a>
+                <a href="#" data-index="N">N</a>
+                <a href="#" data-index="O">O</a>
+                <a href="#" data-index="P">P</a>
+                <a href="#" data-index="Q">Q</a>
+                <a href="#" data-index="R">R</a>
+                <a href="#" data-index="S">S</a>
+                <a href="#" data-index="T">T</a>
+                <a href="#" data-index="U">U</a>
+                <a href="#" data-index="V">V</a>
+                <a href="#" data-index="W">W</a>
+                <a href="#" data-index="X">X</a>
+                <a href="#" data-index="Y">Y</a>
+                <a href="#" data-index="Z">Z</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 영화 정보 리스트-->
+    <p id="resultCount"></p>
+    <table id="movieTable">
+        <thead>
+        <tr>
+            <th>영화명</th>
+            <th>영화명(영문)</th>
+            <th>영화코드</th>
+            <th>제작연도</th>
+            <th>제작국가</th>
+            <th>유형</th>
+            <th>장르</th>
+            <th>제작상태</th>
+            <th>감독</th>
+            <th>제작사</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- JS로 데이터 삽입 -->
+        </tbody>
+    </table>
+    <ul class="pagination">
+
+    </ul>
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="script.js"></script>
+</html>

@@ -1,3 +1,4 @@
 # python 관련
 __pycache__
 db_conn.py
+*.xls

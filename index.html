@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>영화 검색</title>
+  <title>KOFIC 영화관 입장권 통합전산망 :: 영화정보</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,27 +12,25 @@
     <div class="row1">
       <div class="form-group">
         <label>영화명</label>
-        <input type="text" />
+        <input type="text" id="movieNameInput"/>
       </div>
       <div class="form-group">
         <label>감독명</label>
-        <input type="text" />
+        <input type="text" id="directorInput"/>
       </div>
         <!-- 오른쪽 버튼 -->
         <div class="right-buttons">
-            <button class="search-btn">조회</button>
-            <button class="reset-btn">초기화</button>
+            <button type="button" class="search-btn">조회</button>
+            <button type="button" class="reset-btn">초기화</button>
         </div>
     </div>
-       
+    
 
     <!-- 둘째 줄: 제작연도 / 개봉일자 -->
     <div class="row2">
         <div class="form-group">
             <label>제작연도</label>
-            <select><option>--전체--</option></select>
-            ~
-            <select><option>--전체--</option></select>
+            <input type="date" id="openYearInput1"> ~ <input type="date" id="openYearInput2">
         </div>
 
         <div class="form-group">
@@ -49,16 +47,16 @@
     <!-- 숨겨진 필터 영역 -->
     <div id="moreFilters" class="hidden">
         <div class="row">
-            <label>제작상태</label><input type="text" />
-            <label>유형</label><input type="text" />
+            <label>제작상태</label><input type="text" id="statusInput"/>
+            <label>유형</label><input type="text" id="typeInput"/>
         </div>
         <div class="row">
-            <label>장르별</label><input type="text" />
-            <label>국적별</label><input type="text" />
+            <label>장르별</label><input type="text" id="genreInput"/>
+            <label>국적별</label><input type="text" id="nationInput"/>
         </div>
         <div class="row">
             <label>등급별</label><input type="text" />
-            <label>대표국적별</label><input type="text" />
+            <label>대표국적별</label><input type="text" id="bossNationInput"/>
         </div>
         <div class="row checkbox-row">
             <div class="form-group">
@@ -117,9 +115,19 @@
             </div>
         </div>
     </div>
+    <!-- 테이블 위 정렬 + 결과 카운트 박스 -->
+    <div class="header-row">
+        <p id="resultCount">총 0건의 검색</p>
+        <div class="sort-container">
+        <select id="sortSelect">
+            <option value="none">정렬 선택</option>
+            <option value="open_year">제작연도순</option>
+            <option value="movie_nm">영화명순 (ㄱ~Z)</option>
+        </select>
+        </div>
+    </div>
 
     <!-- 영화 정보 리스트-->
-    <p id="resultCount"></p>
     <table id="movieTable">
         <thead>
         <tr>

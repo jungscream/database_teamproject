@@ -175,3 +175,26 @@ tr:nth-child(even) {
   color: #aaa;
   border-color: #eee;
 }
+
+.header-row {
+  display: flex;
+  justify-content: space-between; /* 왼쪽-오른쪽 끝 정렬 */
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#resultCount {
+  margin: 0;
+  font-size: 16px;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+}
+
+#sortSelect {
+  padding: 6px 10px;
+  font-size: 14px;
+}

@@ -13,16 +13,16 @@ window.addEventListener('DOMContentLoaded', async () => {
   movies.forEach(movie => {
     const row = `
       <tr>
-        <td>${movie.movie_nm}</td>
-        <td>${movie.movie_nm_eng}</td>
-        <td>${movie.movie_id}</td>
-        <td>${movie.open_year}</td>
-        <td>${movie.nation}</td>
-        <td>${movie.type}</td>
-        <td>${movie.genre}</td>
-        <td>${movie.status}</td>
-        <td>${movie.director}</td>
-        <td>${movie.producer}</td>
+      <td>${movie.movie_nm}</td>
+      <td>${movie.movie_nm_eng}</td>
+      <td>${movie.movie_id}</td>
+      <td>${movie.open_year}</td>
+      <td>${movie.nation}</td>
+      <td>${movie.type}</td>
+      <td>${movie.genre}</td>
+      <td>${movie.status}</td>
+      <td>${movie.director}</td>
+      <td>${movie.producer}</td>
       </tr>
     `;
     tbody.insertAdjacentHTML('beforeend', row);

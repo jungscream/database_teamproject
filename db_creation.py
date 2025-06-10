@@ -1,6 +1,20 @@
+"""
+구성 단계:
+1. 엑셀 파일 불러오기 및 컬럼 정리
+2. 데이터 병합 및 전처리
+3. MySQL 테이블 생성
+4. 인덱스 생성
+5. 영화 정보 데이터 삽입
+6. DB 커밋 및 연결 종료
+"""
+
 import pandas as pd
 import pymysql
 from db_conn import *
+
+# --------------------------------------------------
+# 1. 엑셀 파일 불러오기 및 컬럼 정리
+# --------------------------------------------------
 
 # 엑셀 파일 경로
 file_path = "movie_list_new.xls"
@@ -38,6 +52,10 @@ df1.columns = [
     "producer",
 ]
 
+# --------------------------------------------------
+# 2. 데이터 병합 및 전처리
+# --------------------------------------------------
+
 # 병합 및 전처리
 df = pd.concat([df1, df2], ignore_index=True).drop_duplicates()
 df = df.where(pd.notnull(df), None)
@@ -47,9 +65,11 @@ print("총 병합된 행 수:", len(df))
 print("예시 행:")
 print(df.head(5))
 
+# --------------------------------------------------
+# 3. MySQL 테이블 생성
+# --------------------------------------------------
 
 # DB 연결
-# --- Create tables if not exist ---
 with conn.cursor() as cursor:
     cursor.execute("""
         create table if not exists movie_info (
@@ -112,6 +132,10 @@ with conn.cursor() as cursor:
     """)
 
 
+    # --------------------------------------------------
+    # 4. 인덱스 생성
+    # --------------------------------------------------
+
     # movie_info
     cursor.execute("CREATE INDEX idx_open_year ON movie_info(open_year);") # 제작연도
     cursor.execute("CREATE INDEX idx_status ON movie_info(status);") # 제작상태
@@ -126,6 +150,7 @@ with conn.cursor() as cursor:
 
     cursor.execute("CREATE INDEX idx_movie_genre_movie ON movie_genre(movie_id);") # 장르
     cursor.execute("CREATE INDEX idx_movie_genre_genre ON movie_genre(genre_id);")
+    cursor.execute("CREATE INDEX idx_genre_name ON genre(name);")
 
     cursor.execute("CREATE INDEX idx_movie_nation_movie ON movie_nation(movie_id);") # 국적
     cursor.execute("CREATE INDEX idx_movie_nation_nation ON movie_nation(nation_id);")
@@ -133,13 +158,16 @@ with conn.cursor() as cursor:
 
     conn.commit()
 
-inserted_count = 0
+# --------------------------------------------------
+# 5. 영화 정보 데이터 삽입
+# --------------------------------------------------
+
+inserted_rows = []
 
 with conn.cursor() as cursor:
-
     insert_sql = """
-        insert into movie_info (movie_nm, movie_nm_eng, open_year, nation, type, genre, status, director, producer)
-        values (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO movie_info (movie_nm, movie_nm_eng, open_year, nation, type, genre, status, director, producer)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
     """
 
     for _, row in df.iterrows():
@@ -157,10 +185,13 @@ with conn.cursor() as cursor:
                 "producer",
             ]
         ]
-        # 모든 컬럼이 None인 행을 출력하고 건너뜀
+
+        # 모든 컬럼이 None이면 건너뜀
         if all(v is None for v in values):
             print("⚠️ 모든 컬럼이 None인 행 발견:", row.to_dict())
             continue
+
+        # 연도 전처리
         try:
             if values[2] is not None:
                 values[2] = int(float(values[2]))
@@ -168,9 +199,17 @@ with conn.cursor() as cursor:
                     values[2] = None
         except ValueError:
             values[2] = None
-        cursor.execute(insert_sql, tuple(values))
-        inserted_count += 1
+
+        inserted_rows.append(tuple(values))
+
+    # executemany로 한 번에 insert
+    cursor.executemany(insert_sql, inserted_rows)
 
 conn.commit()
-print(f"총 {inserted_count}개의 영화 정보가 movie_info 테이블에 삽입되었습니다.")
+
+# --------------------------------------------------
+# 6. DB 커밋 및 연결 종료
+# --------------------------------------------------
+
+print(f"총 {len(inserted_rows)}개의 영화 정보가 movie_info 테이블에 삽입되었습니다.")
 conn.close()

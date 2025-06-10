@@ -16,7 +16,14 @@ def get_movies():
         """
         cursor.execute(sql)
         results = cursor.fetchall()
-    return jsonify(results)
+
+        # None 값을 빈 문자열로 바꾸기
+        clean_results = []
+        for row in results:
+            clean_row = {k: (v if v is not None else '') for k, v in row.items()}
+            clean_results.append(clean_row)
+
+    return jsonify(clean_results)
 
 # 검색했을때 테이블 재생성
 @app.route('/api/search', methods=['GET'])
@@ -130,7 +137,12 @@ def search_movies():
         cursor.execute(sql, values)
         results = cursor.fetchall()
 
-    return jsonify(results)
+        clean_results = []
+        for row in results:
+            clean_row = {k: (v if v is not None else '') for k, v in row.items()}
+            clean_results.append(clean_row)
+
+    return jsonify(clean_results)
 
 # 인덱싱 할때 테이블 재생성
 @app.route('/api/indexing', methods=['GET'])
@@ -166,7 +178,11 @@ def indexing_search():
         cursor.execute(sql, (f"{index}%",))
 
     results = cursor.fetchall()
-    return jsonify(results)
+    clean_results = []
+    for row in results:
+        clean_row = {k: (v if v is not None else '') for k, v in row.items()}
+        clean_results.append(clean_row)
+    return jsonify(clean_results)
 
 if __name__ == '__main__':
     print("서버 실행 중...")
